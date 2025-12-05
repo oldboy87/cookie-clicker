@@ -53,8 +53,54 @@ let stats = {
 
 // the interval
 
-setInterval(function () {
-  totalCookieCount += cps; //totalCookieCount = totalCookieCount + cps
-  //update the DOM to reflect the changes in the values
-  // save the values in local storage
-}, 1000);
+// setInterval(function () {
+//   totalCookieCount += cps; //totalCookieCount = totalCookieCount + cps
+//   //update the DOM to reflect the changes in the values
+//   // save the values in local storage
+// }, 1000);
+
+//TODO: Global constants
+
+const listClickables = document.querySelectorAll(".click-me");
+
+console.log(listClickables);
+
+console.log(listClickables.length);
+
+//TODO: Clickable Functions
+
+function heroCookie() {
+  return "Do hero stuff";
+}
+
+function villainCookie() {
+  return "Do villain stuff";
+}
+
+//TODO: Clickable Object
+
+const objectClickID = {
+  "hero-cookie": ["Hero", heroCookie],
+  "villain-cookie": ["Villain", villainCookie],
+};
+
+//TODO: Create addListeners
+
+function makeClickable() {
+  for (let i = 0; i <= listClickables.length - 1; i++) {
+    listClickables[i].addEventListener("click", clickHandler);
+  }
+}
+
+makeClickable();
+
+//TODO: Create Universal Event Handler
+
+function clickHandler(e) {
+  console.log(e);
+  const clickedID = e.target.getAttribute("id");
+  console.log(clickedID);
+  const idFound = objectClickID[clickedID][1];
+  console.log(idFound);
+  console.log(idFound());
+}
