@@ -40,3 +40,8 @@ My Notes
 - Fetch from cookie-upgrade-api =[ Ran into some problems because I wasn't taking into account async properly. Although I understood it, I was thrown for a loop by a console.log that wasn't after an await operator. It was showing the fetched data which made me improperly evaluate what was happening! Bertie kindly steered me back on track by informing me that the console.log will actually update it's message after response received!]=
 - Tidied up commented out test code and added signposting comments
 -->
+
+<!--Commited and pushed: main-logic branch 05/12/2025: 15.40:
+- Setting up local storage, using userPreferences to test with.
+- checkLocal() will check if there is a local storage "copy" of userPreferences. If so, userPreferences will be updated to match. If not, userPreferences will be built with default values. I will use cookie count and cps using this method, where basically if no save game found then these will start with default values of 0 as it indicates a new player (or a corrupted save!)
+-->

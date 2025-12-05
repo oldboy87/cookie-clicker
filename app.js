@@ -84,6 +84,34 @@ async function gotCookieUpgrades() {
 
 //TODO: Global variables
 
+// Sets empty variable for user preferences to either be built and saved to local storage or updated when retrieved from local storage if already available (checkLocal):
+let userPreferences = {};
+
+// Check if local storage data exists and either build preferences from scratch or retrieve:
+function checkLocal() {
+  if (localStorage.getItem("user preferences") == null) {
+    console.log("User preferences == null, rebuilding defaults...");
+    userPreferences = {
+      theme: "dark",
+      font: "large",
+      contrast: "high",
+      colourblindMode: true,
+    };
+    //STEP 1: stringify the data
+    const stringifiedPreferences = JSON.stringify(userPreferences);
+    //STEP 2: add our stringified data to local storage
+    localStorage.setItem("user preferences", stringifiedPreferences);
+    console.log("Rebuilding completed. Reading from local storage:");
+    console.log(localStorage.getItem("user preferences"));
+  } else {
+    console.log("User preferences found, retrieving from local storage:");
+    userPreferences = localStorage.getItem("user preferences");
+    console.log(userPreferences);
+  }
+}
+
+checkLocal();
+
 // will be defined once data fetched in gotCookieUpgrades
 let upgradeData = [];
 
