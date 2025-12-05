@@ -35,3 +35,8 @@ My Notes
   makeClickable()
   clickHandler(e)
   -->
+
+<!--Commited and pushed: main-logic branch 05/12/2025: 13.50:
+- Fetch from cookie-upgrade-api =[ Ran into some problems because I wasn't taking into account async properly. Although I understood it, I was thrown for a loop by a console.log that wasn't after an await operator. It was showing the fetched data which made me improperly evaluate what was happening! Bertie kindly steered me back on track by informing me that the console.log will actually update it's message after response received!]=
+- Tidied up commented out test code and added signposting comments
+-->
