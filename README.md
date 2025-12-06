@@ -45,3 +45,10 @@ My Notes
 - Setting up local storage, using userPreferences to test with.
 - checkLocal() will check if there is a local storage "copy" of userPreferences. If so, userPreferences will be updated to match. If not, userPreferences will be built with default values. I will use cookie count and cps using this method, where basically if no save game found then these will start with default values of 0 as it indicates a new player (or a corrupted save!)
 -->
+
+<!--Commited and pushed: main-logic branch 06/12/2025: 11.25:
+- Adding some sections to HTML as well as placeholder h2s with "cookie-count" and "cps-count" IDs.
+- Changing to use buttons instead of just images
+  When changing to button, had to stop using e.target and instead e.currentTarget
+- Re-structured objectLookUp so there are no array elements as not required and only served to cause me confusion! Adjusted clickHandler to account for this.
+-->

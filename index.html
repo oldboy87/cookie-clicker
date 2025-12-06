@@ -8,29 +8,28 @@
     <title>Clicker Game</title>
   </head>
   <body>
-    <h1>Cookie Clicker</h1>
-    <!-- a clickable element, for example, an img -->
-    <img
-      class="click-me"
-      id="hero-cookie"
-      src="./images/template_main_cookie.jpg"
-      alt="Clickable Cookie"
-    />
-    <img
-      class="click-me"
-      id="villain-cookie"
-      src="./images/template_main_cookie.jpg"
-      alt="Clickable Cookie"
-    />
-    <img
-      class="click-me"
-      id="upgrade-test"
-      src="./images/template_main_cookie.jpg"
-      alt="Clickable Cookie"
-    />
+    <section id="left">
+      <h1>Cookie Clicker</h1>
+      <h2>Total cookie count:</h2>
+      <h2 id="cookie-count">0</h2>
+      <h2>Cookies per second (cps):</h2>
+      <h2 id="cps-count">0</h2>
+      <!-- a clickable element, for example, an img -->
+      <button class="system-button" id="audio">
+        <img src="./images/template_main_cookie.jpg" alt="Clickable Cookie" />
+      </button>
+    </section>
+    <section id="middle">
+      <button class="cookie-button" id="sherlock">
+        <img src="./images/template_main_cookie.jpg" alt="Clickable Cookie" />
+      </button>
+    </section>
+    <section id="right">
+      <button class="upgrade-cookie" id="first-upgrade">
+        <img src="./images/template_main_cookie.jpg" alt="Clickable Cookie" />
+      </button>
+    </section>
     <!-- game info -->
-    <p>Total cookie count: 0</p>
-    <p>Cookies per second (cps): 0</p>
     <!-- container for the shop upgrades -->
     <section id="shop-container"></section>
   </body>

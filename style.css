@@ -8,9 +8,18 @@
 }
 
 body {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  flex-shrink: inherit;
   background-color: peru;
 }
 
 /* .click-me {
   padding: 0px;
 } */
+
+img {
+  width: 10rem;
+}
