@@ -59,10 +59,27 @@ console.log("Hello World!");
 //   // save the values in local storage
 // }, 1000);
 
-//TODO: Cookie COunt and Cookies Per Second object defined here:
+//TODO: Cookie Count and Cookies Per Second object defined here:
+// Would like to account for
 let stats = {
   cookieCount: 0,
   cps: 0,
+  // See details regarding Upgrade shops below. This one is NOT taken from API, but behaves the same way:
+  clickScale: [1, 1.1],
+  // Upgrade shop items - key names match array number from cookie upgrade API
+  // Child array indeces are: 0 = upgrade level, 1 = scale factor.
+  // Formula will be: base cps + (base cps * level * scale factor)
+  //TODO: Gonna keep all scale factors as 0.1 for now:
+  0: [0, 0.1], //API: 0: "Auto-Clicker", base cost: 100, base cps: 1
+  1: [0, 0.1], //API: 1: "Enhanced Oven", base cost: 500, base cps: 5
+  2: [0, 0.1], //API: 2: "Cookie Farm", base cost: 1000, base cps: 10
+  3: [0, 0.1], //API: 3: "Robot Baker", base cost: 2000, base cps: 20
+  4: [0, 0.1], //API: 4: "Cookie Factory", base cost: 5000, base cps: 50
+  5: [0, 0.1], //API: 5: "Magic Flour", base cost: 10000, base cps: 100
+  6: [0, 0.1], //API: 6: "Time Machine", base cost: 20000, base cps: 200
+  7: [0, 0.1], //API: 7: "Quantum Oven", base cost: 50000, base cps: 500
+  8: [0, 0.1], //API: 8: "Alien Technology", base cost: 100000, base cps: 1000
+  9: [0, 0.1], //API: 9: "Interdimensional Baker", cost: 200000, base cps: 2000
 };
 
 //TODO: fetch from cookie-upgrade-api
@@ -172,15 +189,34 @@ const objectLookUp = {
     function: cookieButton,
     count: add,
     cps: doNothing,
-    sherlock: "Bob",
-    superman: "Mary",
+    // Array indeces are: 0 = bool value "false" determines that no check is necessary to see if button should be clickable, 1 = value to add to cookie count
+    //TODO Not sure if bool value is the way to go, see readme
+    //TODO: Actually not sure if I should round here:
+    // sum rounded down/up so cookie count remains whole number:
+    // sherlock: ["false", Math.round(1 * stats.clickScale)],
+    // superman: ["false", Math.round(2 * stats.clickScale)],
+    sherlock: 1,
+    superman: 2,
   },
   "upgrade-button": {
     function: upgradeButton,
     count: subtract,
     cps: add,
-    "first-upgrade": "Susie",
-    "second-upgrade": "Joe",
+    // Upgrade shop items - key names match array number from cookie upgrade API
+    // Array indeces are: 0 = bool value "true" determines that we need to check if button click should result in purchase, 1 = value to add to cookie count (in this case a negative number)
+    //TODO Not sure if bool value is the way to go, see readme
+    //TODO: Build this from cookie upgrade API!!!!:
+    clickScale: ["true", -50], // "Click Upgrade", base cost: 50
+    0: ["true", -100], //API: 0: "Auto-Clicker", base cost: 100, base cps: 1
+    1: ["true", -500], //API: 1: "Enhanced Oven", base cost: 500, base cps: 5
+    2: ["true", -1000], //API: 2: "Cookie Farm", base cost: 1000, base cps: 10
+    3: ["true", -2000], //API: 3: "Robot Baker", base cost: 2000, base cps: 20
+    4: ["true", -5000], //API: 4: "Cookie Factory", base cost: 5000, base cps: 50
+    5: ["true", -10000], //API: 5: "Magic Flour", base cost: 10000, base cps: 100
+    6: ["true", -20000], //API: 6: "Time Machine", base cost: 20000, base cps: 200
+    7: ["true", -50000], //API: 7: "Quantum Oven", base cost: 50000, base cps: 500
+    8: ["true", -100000], //API: 8: "Alien Technology", base cost: 100000, base cps: 1000
+    9: ["true", -200000], //API: 9: "Interdimensional Baker", cost: 200000, base cps: 2000
   },
   "system-button": {
     function: systemButton,
@@ -190,13 +226,6 @@ const objectLookUp = {
     "something-else": "Joe",
   },
 };
-
-// const testaaaa = objectLookUp.cookieButton[0].sherlock;
-// const testaaaa = objectLookUp["upgrade-button"].function;
-const feet = "sherlock";
-const testaaaa = objectLookUp["cookie-button"][feet];
-console.log("Leg fapenzzz");
-console.log(testaaaa);
 
 //TODO: Create addListeners
 // So far just one for making elements already on the page. Finds them with listClickables, adding EventListener to each element.
@@ -223,16 +252,19 @@ function clickHandler(e) {
   console.log("clickedId:");
   console.log(clickedId);
   //TODO: May just want to use ID, perhaps come back to this:
-  // checks class with objectClickID to find corresponding function reference --> [1]:
+  // checks class with objectLookUp to find corresponding function reference
   const classFound = objectLookUp[clickedClass];
   console.log("classFound:");
   console.log(classFound);
   const classFunc = classFound.function;
   console.log("classFunc:");
   console.log(classFunc);
+  // checks ID with objectLookUp
   const idFound = classFound[clickedId];
   console.log("idFound:");
   console.log(idFound);
+  console.log(idFound[0]);
+  console.log(idFound[1]);
   // logs function reference summary:
   // logs return of referenced function:
   console.log(classFunc(idFound), "Andrews");
@@ -240,32 +272,30 @@ function clickHandler(e) {
   //TODO: Put below in here to test fetch set up correctly. Currently does not and may never have a reason to be here:
   // logs fetched upgradeData:
   console.log(upgradeData);
-  console.log(classFound[2]);
+  console.log(upgradeData[0]);
+  console.log(upgradeData[0].cost);
+  switch (clickedClass) {
+    case "cookie-button":
+      console.log("Case: Cookie");
+      break;
+    case "upgrade-button":
+      console.log("Case: Upgrade");
+      break;
+    case "system-button":
+      console.log("Case: System");
+      break;
+  }
+  //TODO: working on adjusting counter:
+  // if ((idFound[0] = "true" + stats.cookieCount < 100)) {
+  //   //TODO: No purchase, no animation
+  // } else {
+  //   console.log(`Current cookie count = ${stats.cookieCount}`);
+  //   stats.cookieCount = stats.cookieCount + idFound[1];
+  //   console.log(`New cookie count = ${stats.cookieCount}`);
+  //   console.log(1 + -10);
+  //   console.log(1 + -10 * 2);
+  // }
 }
-
-const testObj = {
-  Parent1: [
-    {
-      Child1: "Bob",
-      Child2: "Mary",
-    },
-  ],
-  Parent2: [
-    {
-      Child1: "Steve",
-      Child2: "John",
-    },
-  ],
-  Parent3: [
-    {
-      Child1: "Susie",
-      Child2: "Joe",
-    },
-  ],
-};
-
-console.log(testObj);
-console.log(testObj.Parent3);
 
 // calls function to fetch cookie-upgrade api data and setup click-able eventListeners. Basically starts the whole game:
 gotCookieUpgrades();

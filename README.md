@@ -52,3 +52,30 @@ My Notes
   When changing to button, had to stop using e.target and instead e.currentTarget
 - Re-structured objectLookUp so there are no array elements as not required and only served to cause me confusion! Adjusted clickHandler to account for this.
 -->
+
+<!--Commited and pushed: main-logic branch 07/12/2025: 05.50:
+Just to note: in clickHandler I check ID primarily for buttons for system and upgrade shop to distinguish options and upgrades from each other. I did have an idea for "enemy" cookies which would use class "cookie-button" and have different click events to the main cookie and would use IDs for this, but that's a "maybe" feature. If I have time, setting it up as I have should allow modularity to accommodate.
+
+Also while each class has an associated function in objectLookup, I do intend to try and avoid using this if possible. Basically my aim is for clickHandler to be a one-stop function, but this may come at the cost of readability. If I tidied up all the console logs into a loop function or something, that would help!
+
+-Start working on incrementing cookie counter
+Would like to account for number values not going crazy, like converting "1000 000" to "1 million" for example. I have a vague awareness of interger value limits and taking that into consideration, but for this assignment it's more in terms of a UX consideration. Big numbers can look impressive, but too big gets hard to read (and looks ugly)! If I have time though.
+
+Also if I have time: capping upgrade levels!
+
+- Adding template buttons for shop upgrades
+
+**===//TODO Not sure if bool value is the way to go, see readme===**
+The idea was that I would check to see if player still has enough cookies to click this button again. Although as I type this, rather than the check happening AFTERWARDS, have it happen before cookie transaction is applied. Obviously! I threw myself because I was thinking in terms of dimming the button as well so it communicates that it can't be clicked.
+
+I think the buttons greying out can happen on setInterval. I could have multiple going where one is updating cps and the other is on a ashorter interval, but for the purposes of this assignment I might just stick with one interval. It won't be such a big deal if user clicks on non-dimmed button for purchase not to be made, a fraction of a second before it goes dim! Plus, feedback that will happen on click, WON'T happen if user doesn't have enough funds.
+
+MIGHT want the bool statements to be index 0, then. (Already done, did it right away)
+
+**================================================================**
+
+Taking a break, don't forget to investigate if statement, doesn't seem to be working:
+
+ <!-- if ((idFound[0] = "true" + stats.cookieCount < 100)) {
+
+Although instead of the "true/false" array item, think I'll just use a switch with class determining which case. -->
