@@ -94,3 +94,10 @@ Although instead of the "true/false" array item, think I'll just use a switch wi
   Using Math.trunc(stats.cookieCount) so numbers after decimal place are ignored
 - Adding setInterval() for adding cps to cookie total and updating HTML element
   -Probably want to getElementById as a global variable, right now it's within clickHandler(); (I did this immediately) -->
+
+<!--Commited and pushed: main-logic branch 07/12/2025: 14.39:
+-You can have too many console logs! Getting rid of most but the obviously useful ones and will re-add some if need be.
+-General tidy up too.
+
+- Changed how default userPreferences is built so it's just audio: true for now
+- checkLocal() is now called in gotCookieUpgrades() although this needs further consideration, the order in relation to call for buildLookUp() at the very least -->
