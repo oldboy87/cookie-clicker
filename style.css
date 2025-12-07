@@ -8,5 +8,21 @@
 }
 
 body {
-  background-color: peru;
+  background-color: white;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-shrink: inherit;
+}
+
+.upgrade-button img {
+  width: 4rem;
+}
+
+.upgrade-button {
+  display: flex;
 }
