@@ -8,18 +8,21 @@
 }
 
 body {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  flex-shrink: inherit;
-  background-color: peru;
+  background-color: white;
 }
 
-/* .click-me {
-  padding: 0px;
-} */
+main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-shrink: inherit;
+}
 
-img {
-  width: 10rem;
+.upgrade-button img {
+  width: 4rem;
+}
+
+.upgrade-button {
+  display: flex;
 }

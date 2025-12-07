@@ -10,13 +10,29 @@ Requesting feedback about a specific part of your submission. What useful extern
 
 //========================================
 
-Reflections
+Attributions:
 
-//========================================
+<a href="https://www.flaticon.com/free-icons/biscuit" title="biscuit icons">Biscuit icons created by Freepik - Flaticon</a>
 
-//========================================
+<a href="https://www.flaticon.com/free-icons/click" title="click icons">Click icons created by Freepik - Flaticon</a>
 
-My Notes
+<a href="https://www.flaticon.com/free-icons/oven" title="oven icons">Oven icons created by Hasymi - Flaticon</a>
+
+<a href="https://www.flaticon.com/free-icons/farm" title="farm icons">Farm icons created by Freepik - Flaticon</a>
+
+<a href="https://www.flaticon.com/free-icons/baker" title="baker icons">Baker icons created by amonrat rungreangfangsai - Flaticon</a>
+
+<a href="https://www.flaticon.com/free-icons/industry" title="industry icons">Industry icons created by Freepik - Flaticon</a>
+
+<a href="https://www.flaticon.com/free-icons/witch" title="witch icons">Witch icons created by Freepik - Flaticon</a>
+
+<a href="https://www.flaticon.com/free-icons/time-machine" title="time machine icons">Time machine icons created by Freepik - Flaticon</a>
+
+<a href="https://www.flaticon.com/free-icons/factory-machine" title="factory machine icons">Factory machine icons created by Freepik - Flaticon</a>
+
+<a href="https://www.flaticon.com/free-icons/ufo" title="ufo icons">Ufo icons created by Freepik - Flaticon</a>
+
+<a href="https://www.flaticon.com/free-icons/cthulhu" title="cthulhu icons">Cthulhu icons created by Smashicons - Flaticon</a>
 
 //========================================
 
@@ -101,3 +117,30 @@ Although instead of the "true/false" array item, think I'll just use a switch wi
 
 - Changed how default userPreferences is built so it's just audio: true for now
 - checkLocal() is now called in gotCookieUpgrades() although this needs further consideration, the order in relation to call for buildLookUp() at the very least -->
+
+<!--Commited and pushed: main-logic branch 07/12/2025: 21.25:
+- added global hasClicked bool for updating local storage save if player clicked within the last second - setInterval. hasClicked set to true for cookie and store upgrade click events.
+- added userPreference save and local storage update at system button click event, don't need to save this everytime gamplay click events occur.
+- audio button now essentially inverts true / false. SO if audio is on, when clicked, it will switched off, and vise versa. Well, not yet as there's currently no audio to mute! But code is just about ready for it.
+- added code in clickHandler for deleting player preferences and/or playerStats. A nested switch seems not to be recommended, but I don't think this looks TOO bad. But yeah I do appreciate that this isn't best practice. cookie-button and upgrade-button are pretty modular, though!
+- set stringified variables as global to be set again when needed, rather than the same const name being used in several functions. This only actually seemed to be a problem with setInterval, probably because I've set it up as a... constructor function? Is that the right terminology? Amyhow, after making this change a bunch of stuff broke and it's time for dinner. Will come back to it shortly.
+- As an aside, I really should have had DOM adjustments be put into a function but won't have time now.
+- updating playerPreferences, playerStats and their corresponding local storage saving should have been in a function too. Likely won't have time to correct this. Could have used as callback functions too, instead of checkLocal calling buildPlayerStats to set a global variable (playerStats) for checkLocal to reference on the next line. May have its own drawbacks, though.
+
+!!! Hmmm noticed bug where cps isn't saved. NO WAIT! DOM element doesn't load, increasing cps shows it again... fixed. Count was updating on interval whereas cps isn't. I was going to add both after checkLocal but these DOM elements already feel like they are all over the place, so adding cps update on Interval too contains the spread a little. This introduced a bug where cps shows more than 2 decimal places. Think it must be how I'm multiplying and dividing them, but no time to investigate!
+
+Probably would have been better to only fetch from API when no save data exists, then I could have directly updated that and used it as playerStats rather than having these two large objects that are more or less holding the same information.
+
+Reached download limit for icons, autoclicker will just have to be represented by a cookie!
+
+No indication of upgrade level. No time!
+
+No time to implement animation when clicking or anyt audio feedback whatsoever, so mute button will not exist!
+
+No themes! No system buttons at all!
+
+Very little CSS done, not comfortable with it enough to do under intense time pressure and I left myself basically half an hour. Time management skills need work!
+
+Virtually no responsiveness at all.
+
+Pushing, merging. Publishing. Submitting. -->
