@@ -1,8 +1,8 @@
 console.log("Hello World!");
 
 //game logic
-// when the user clicks on the cookie, the total count of cookies goes up by 1
-// when the user clicks on the "buy" button in an upgrade in the shop, the total count of cookies goes down by the cost of the upgrade, and the cps value goes up
+// when the Player clicks on the cookie, the total count of cookies goes up by 1
+// when the Player clicks on the "buy" button in an upgrade in the shop, the total count of cookies goes down by the cost of the upgrade, and the cps value goes up
 
 // we will need functions to contain the game logic
 // we will get the shop upgrades data from the Cookie-Upgrade API
@@ -11,7 +11,7 @@ console.log("Hello World!");
 //-OPTION 2: You could have a reusable function
 
 // Tip on local storage:
-//-Make sure the local storage values are updated after the user buys an upgrade OR/AND when the user clicks on a cookie
+//-Make sure the local storage values are updated after the Player buys an upgrade OR/AND when the Player clicks on a cookie
 
 //=================================================
 
@@ -25,7 +25,7 @@ console.log("Hello World!");
 //   cps: 0,
 // };
 
-// if there is data already in local storage, update stats with this data, so the user picks it up where they left off
+// if there is data already in local storage, update stats with this data, so the Player picks it up where they left off
 
 //=================================================
 
@@ -43,8 +43,8 @@ console.log("Hello World!");
 // after you complete this task, you should see the upgrades in your shop-container!
 
 //TODO: create function (or functions) to handle (hyuk hyuk EventHandle) the purchase action
-// the user needs a button to buy the item
-// when teh user clicks the button:
+// the Player needs a button to buy the item
+// when teh Player clicks the button:
 // subtract cost of upgrade from totalCookieCount
 // add increase value to cps
 // could also save new values in local storage
@@ -101,33 +101,36 @@ async function getCookieUpgrades() {
 async function gotCookieUpgrades() {
   const data = await getCookieUpgrades();
   upgradeData = data;
+  buildLookUp(upgradeData);
   makeClickable(); //this function will not be called until the data is ready. Ensures elements page load starts with that are intended to be clickable have their corresponding API data fetched and ready before they ARE clickable
 }
 
 //TODO: LocalStorage setup
-// Sets empty variable for user preferences to either be built and saved to local storage or updated when retrieved from local storage if already available (checkLocal):
-let userPreferences = {};
+// Sets empty variable for Player preferences to either be built and saved to local storage or updated when retrieved from local storage if already available (checkLocal):
+let PlayerPreferences = {};
 
 // Check if local storage data exists and either build preferences from scratch or retrieve:
 function checkLocal() {
-  if (localStorage.getItem("user preferences") == null) {
-    console.log("User preferences == null, rebuilding defaults...");
-    userPreferences = {
+  //check for null, as in local storage copy does NOT exist:
+  if (localStorage.getItem("Player preferences") == null) {
+    console.log("Player preferences == null, rebuilding defaults...");
+    PlayerPreferences = {
       theme: "dark",
       font: "large",
       contrast: "high",
       colourblindMode: true,
     };
     //STEP 1: stringify the data
-    const stringifiedPreferences = JSON.stringify(userPreferences);
+    const stringifiedPreferences = JSON.stringify(PlayerPreferences);
     //STEP 2: add our stringified data to local storage
-    localStorage.setItem("user preferences", stringifiedPreferences);
+    localStorage.setItem("Player preferences", stringifiedPreferences);
     console.log("Rebuilding completed. Reading from local storage:");
-    console.log(localStorage.getItem("user preferences"));
+    console.log(localStorage.getItem("Player preferences"));
   } else {
-    console.log("User preferences found, retrieving from local storage:");
-    userPreferences = localStorage.getItem("user preferences");
-    console.log(userPreferences);
+    //  local storage copy != null, so let's grab it!
+    console.log("Player preferences found, retrieving from local storage:");
+    PlayerPreferences = localStorage.getItem("Player preferences");
+    console.log(PlayerPreferences);
   }
 }
 
@@ -146,86 +149,66 @@ console.log(listClickables);
 
 console.log(listClickables.length);
 
-//TODO: Clickable Functions
-// Will likely want this to be Cookie / Upgrades / System (something like that) which will then have their own "child functions" (although probably best to split up the class="click-me" into these categories)
-
-function cookieButton(a) {
-  return a;
-}
-
-function upgradeButton(a) {
-  return a;
-}
-
-function systemButton(a) {
-  return a;
-}
-
-//TODO: Operator functions
-
-function add(a, b) {
-  const result = a + b;
-  console.log(`Adding ${a} and ${b}...`);
-  console.log(`Returning answer: ${result}`);
-  return result;
-}
-
-function subtract(a, b) {
-  const result = a + b;
-  console.log(`Adding ${a} and ${b}...`);
-  console.log(`Returning answer: ${result}`);
-  return result;
-}
-
-function doNothing(a, b) {
-  //CODE
-}
-
 //TODO: Clickable Object
 // Object containing arrays for every type of click-able element. Array structure is ["ALT TEXT", associatedFunction] - ALT TEXT is a maybe though. Also may want three separate of these for COOKIE / UPGRADE /SYSTEM (or something like that)
 
 const objectLookUp = {
   "cookie-button": {
-    function: cookieButton,
-    count: add,
-    cps: doNothing,
-    // Array indeces are: 0 = bool value "false" determines that no check is necessary to see if button should be clickable, 1 = value to add to cookie count
-    //TODO Not sure if bool value is the way to go, see readme
-    //TODO: Actually not sure if I should round here:
-    // sum rounded down/up so cookie count remains whole number:
-    // sherlock: ["false", Math.round(1 * stats.clickScale)],
-    // superman: ["false", Math.round(2 * stats.clickScale)],
+    // Key value = base value of cookies added:
     sherlock: 1,
     superman: 2,
   },
   "upgrade-button": {
-    function: upgradeButton,
-    count: subtract,
-    cps: add,
     // Upgrade shop items - key names match array number from cookie upgrade API
-    // Array indeces are: 0 = bool value "true" determines that we need to check if button click should result in purchase, 1 = value to add to cookie count (in this case a negative number)
+    // Array indeces are: 0 = base cost of upgrade, 1 = base cps added, 2 = current upgrade level, 3 = scale factor, 4 = Name
+    // cps formula for upgrades != clickScale = ["upgrade-button"][id][1] + ([1]*[2]*[3])
+    // cps formula for clickScale will behave like the other upgrades, it's just it will always add zero to zero
+    // Formula for clickScale when cookie is clicked = ["cookie-button"][id] + (["cookie-button"][id]*["upgrade-button"][id][2]*[3])
+    // Cost wil lwork the same way, just using [0] instead of [1]
     //TODO Not sure if bool value is the way to go, see readme
     //TODO: Build this from cookie upgrade API!!!!:
-    clickScale: ["true", -50], // "Click Upgrade", base cost: 50
-    0: ["true", -100], //API: 0: "Auto-Clicker", base cost: 100, base cps: 1
-    1: ["true", -500], //API: 1: "Enhanced Oven", base cost: 500, base cps: 5
-    2: ["true", -1000], //API: 2: "Cookie Farm", base cost: 1000, base cps: 10
-    3: ["true", -2000], //API: 3: "Robot Baker", base cost: 2000, base cps: 20
-    4: ["true", -5000], //API: 4: "Cookie Factory", base cost: 5000, base cps: 50
-    5: ["true", -10000], //API: 5: "Magic Flour", base cost: 10000, base cps: 100
-    6: ["true", -20000], //API: 6: "Time Machine", base cost: 20000, base cps: 200
-    7: ["true", -50000], //API: 7: "Quantum Oven", base cost: 50000, base cps: 500
-    8: ["true", -100000], //API: 8: "Alien Technology", base cost: 100000, base cps: 1000
-    9: ["true", -200000], //API: 9: "Interdimensional Baker", cost: 200000, base cps: 2000
+    clickScale: [50, 0, 0, 1.1, "Click Upgrade"], // "Click Upgrade", base cost: 50
+    0: [], //API: 0: "Auto-Clicker", base cost: 100, base cps: 1
+    1: [], //API: 1: "Enhanced Oven", base cost: 500, base cps: 5
+    2: [], //API: 2: "Cookie Farm", base cost: 1000, base cps: 10
+    3: [], //API: 3: "Robot Baker", base cost: 2000, base cps: 20
+    4: [], //API: 4: "Cookie Factory", base cost: 5000, base cps: 50
+    5: [], //API: 5: "Magic Flour", base cost: 10000, base cps: 100
+    6: [], //API: 6: "Time Machine", base cost: 20000, base cps: 200
+    7: [], //API: 7: "Quantum Oven", base cost: 50000, base cps: 500
+    8: [], //API: 8: "Alien Technology", base cost: 100000, base cps: 1000
+    9: [], //API: 9: "Interdimensional Baker", cost: 200000, base cps: 2000
   },
   "system-button": {
-    function: systemButton,
-    count: doNothing,
-    cps: doNothing,
-    audio: "Susie",
-    "something-else": "Joe",
+    // System buttons, will probably only be for volume mute on/off, but if I have time to implement theme for example, this will go here too.
+    // Array indeces are: [0] = true boolean, [1] = false boolean
+    audio: [true, false],
   },
 };
+
+// const testArray = [];
+// testArray[0] = 0;
+// testArray[1] = 1;
+// testArray[2] = 2;
+// console.log(testArray);
+
+// console.log("Before:");
+// console.log(objectLookUp);
+// objectLookUp["upgrade-button"][10][0] = "sup";
+
+function buildLookUp(data) {
+  for (let i = 0; i <= data.length - 1; i++) {
+    // objectLookUp["upgrade-button"][i].splice(0, 0, 1, 2, 3 * -10);
+    // Cost multiplied by negative 1 so when clicked cookies are REMOVED, not added
+    objectLookUp["upgrade-button"][i][0] = data[i].cost;
+    objectLookUp["upgrade-button"][i][1] = data[i].increase;
+    objectLookUp["upgrade-button"][i][2] = 0;
+    objectLookUp["upgrade-button"][i][3] = 1.1;
+    objectLookUp["upgrade-button"][i][4] = data[i].name;
+  }
+  console.log("Object Look Up:");
+  console.log(objectLookUp);
+}
 
 //TODO: Create addListeners
 // So far just one for making elements already on the page. Finds them with listClickables, adding EventListener to each element.
@@ -256,19 +239,12 @@ function clickHandler(e) {
   const classFound = objectLookUp[clickedClass];
   console.log("classFound:");
   console.log(classFound);
-  const classFunc = classFound.function;
-  console.log("classFunc:");
-  console.log(classFunc);
   // checks ID with objectLookUp
   const idFound = classFound[clickedId];
   console.log("idFound:");
   console.log(idFound);
   console.log(idFound[0]);
   console.log(idFound[1]);
-  // logs function reference summary:
-  // logs return of referenced function:
-  console.log(classFunc(idFound), "Andrews");
-  // console.log(classFound(clickedId));
   //TODO: Put below in here to test fetch set up correctly. Currently does not and may never have a reason to be here:
   // logs fetched upgradeData:
   console.log(upgradeData);
@@ -277,9 +253,36 @@ function clickHandler(e) {
   switch (clickedClass) {
     case "cookie-button":
       console.log("Case: Cookie");
+      console.log(objectLookUp["upgrade-button"].clickScale);
+      const scale = objectLookUp["upgrade-button"].clickScale;
+      const clickWorth = idFound + scale[2] * scale[3];
+      console.log(
+        `Player clicked ${clickedId} and will get ${clickWorth} cookies`
+      );
+      stats.cookieCount = stats.cookieCount + clickWorth;
+      console.log(`Player now has ${stats.cookieCount} cookies`);
+      console.log(stats.cookieCount);
       break;
     case "upgrade-button":
       console.log("Case: Upgrade");
+      const upgradeCost = idFound[0] + idFound[0] * idFound[2] * idFound[3];
+      const cpsAdd = idFound[1] + idFound[1] * idFound[2] * idFound[3];
+      if (stats.cookieCount >= upgradeCost) {
+        console.log(
+          `Player has purchased ${idFound[4]} for ${upgradeCost} cookies`
+        );
+        stats.cookieCount = stats.cookieCount - upgradeCost;
+        console.log(`Increasing cps by ${cpsAdd}`);
+        stats.cps = stats.cps + cpsAdd;
+        console.log(`New cps is ${stats.cps}`);
+        //TODO: Update id: "cookie-count" and "cps" via DOM
+        idFound[2] = idFound[2] + 1;
+        console.log(`Increasing ${idFound[4]} to level ${idFound[2]}`);
+      } else {
+        console.log(
+          `Player only has ${stats.cookieCount} cookies and cannot afford to purchase ${idFound[4]} as it costs ${upgradeCost} cookies`
+        );
+      }
       break;
     case "system-button":
       console.log("Case: System");

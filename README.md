@@ -79,3 +79,12 @@ Taking a break, don't forget to investigate if statement, doesn't seem to be wor
  <!-- if ((idFound[0] = "true" + stats.cookieCount < 100)) {
 
 Although instead of the "true/false" array item, think I'll just use a switch with class determining which case. -->
+
+<!--Commited and pushed: main-logic branch 07/12/2025: 11.05:
+- Actually building objectLookup from cookie upgrade api. Have done so with a loop in buildLookUp() which is called after fetch API async function getCookieUpgrades() is complete (via gotCookieUpgrades())
+- Cleaned up the rest of objectLookUp, getting rid of function references (and their corresponding functions as well as operator functions that won't be used)
+- Can't remember if I wrote this in the readme but I was multiplying -1 to objectLookUp upgrade values as "cookie-button" and "upgrade-button" was sharing logic, so clicking a cookie or buying an upgrade used:
+  stats.cookieCount = stats.cookieCount + idFound[0]
+  This way clicking cookie would accumulate (positive number + positive number) whereas clicking shop upgrade was positive number + negative number, resulting in a subtraction. Now, however, I have a switch statement in place so for upgrades it looks like:
+  stats.cookieCount = stats.cookieCount - idFound[0];
+- Finished logic for incrementing cookie count and cps. Readability is... not great. Will try and convert arrays to objects so key values make things clearer. -->
