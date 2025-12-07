@@ -88,3 +88,9 @@ Although instead of the "true/false" array item, think I'll just use a switch wi
   This way clicking cookie would accumulate (positive number + positive number) whereas clicking shop upgrade was positive number + negative number, resulting in a subtraction. Now, however, I have a switch statement in place so for upgrades it looks like:
   stats.cookieCount = stats.cookieCount - idFound[0];
 - Finished logic for incrementing cookie count and cps. Readability is... not great. Will try and convert arrays to objects so key values make things clearer. -->
+
+<!--Commited and pushed: main-logic branch 07/12/2025: 11.50:
+- Manipulating "cookie-count" and "cps-count" h2 elements via DOM so they update accordingly. Cookie count will update immediately on cookie click and upgrade purchase and again alongside cps-count on setInterval.
+  Using Math.trunc(stats.cookieCount) so numbers after decimal place are ignored
+- Adding setInterval() for adding cps to cookie total and updating HTML element
+  -Probably want to getElementById as a global variable, right now it's within clickHandler(); (I did this immediately) -->

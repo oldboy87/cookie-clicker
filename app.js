@@ -149,6 +149,9 @@ console.log(listClickables);
 
 console.log(listClickables.length);
 
+const htmlCount = document.getElementById("cookie-count");
+const htmlCps = document.getElementById("cps-count");
+
 //TODO: Clickable Object
 // Object containing arrays for every type of click-able element. Array structure is ["ALT TEXT", associatedFunction] - ALT TEXT is a maybe though. Also may want three separate of these for COOKIE / UPGRADE /SYSTEM (or something like that)
 
@@ -156,7 +159,7 @@ const objectLookUp = {
   "cookie-button": {
     // Key value = base value of cookies added:
     sherlock: 1,
-    superman: 2,
+    superman: 100,
   },
   "upgrade-button": {
     // Upgrade shop items - key names match array number from cookie upgrade API
@@ -261,7 +264,7 @@ function clickHandler(e) {
       );
       stats.cookieCount = stats.cookieCount + clickWorth;
       console.log(`Player now has ${stats.cookieCount} cookies`);
-      console.log(stats.cookieCount);
+      htmlCount.innerHTML = Math.trunc(stats.cookieCount);
       break;
     case "upgrade-button":
       console.log("Case: Upgrade");
@@ -276,6 +279,9 @@ function clickHandler(e) {
         stats.cps = stats.cps + cpsAdd;
         console.log(`New cps is ${stats.cps}`);
         //TODO: Update id: "cookie-count" and "cps" via DOM
+        htmlCount.innerHTML = Math.trunc(stats.cookieCount);
+        // CPS: Multiplying by 100, truncating and dividing result by 100 to limit counter to 2 decimal places:
+        htmlCps.innerHTML = Math.trunc(stats.cps * 100) / 100;
         idFound[2] = idFound[2] + 1;
         console.log(`Increasing ${idFound[4]} to level ${idFound[2]}`);
       } else {
@@ -299,6 +305,11 @@ function clickHandler(e) {
   //   console.log(1 + -10 * 2);
   // }
 }
+
+setInterval(function () {
+  stats.cookieCount = stats.cookieCount + stats.cps;
+  htmlCount.innerHTML = Math.trunc(stats.cookieCount);
+}, 1000);
 
 // calls function to fetch cookie-upgrade api data and setup click-able eventListeners. Basically starts the whole game:
 gotCookieUpgrades();
